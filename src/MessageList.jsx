@@ -4,7 +4,6 @@ import Message from './Message.jsx';
 class MessageList extends Component {
   constructor(props) {
   super(props);
-  console.log(this.props.messages)
 }
 
 render () {
