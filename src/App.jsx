@@ -30,6 +30,16 @@ class App extends Component {
       this.setState({messages: messages})
     }, 3000);
   }
+
+  addMessage = (username, content) => {
+    let newData = {
+      id: content.length,
+      username: username,
+      content: content
+    }
+    let totalMessages = this.state.messages.concat(newData)
+    this.setState({messages: totalMessages});
+  }
   
   render() {
     return (
@@ -38,7 +48,7 @@ class App extends Component {
         <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages}/>
-        <ChatBar name={this.state.currentUser.name}/>
+        <ChatBar name={this.state.currentUser.name} addMessage={this.addMessage}/>
       </div>
     );
   }
