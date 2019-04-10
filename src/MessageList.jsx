@@ -9,14 +9,15 @@ class MessageList extends Component {
 render () {
   const messageLists  = this.props.messages.map(msg => (
     //make ID generator
-    < Message msgKey={msg.id} username={msg.username} content={msg.content} />
+    < Message msgKey={msg.id} username={msg.username} content={msg.content} type={msg.type}/>
   ));
   return (
     <div className="message">
       {this.props.messages.length ? (
         <ul>{messageLists}</ul>) : "No Messages To Display"}
-    </div>)
-}
+    </div>
+    )
+  }
 }
 
 export default MessageList;

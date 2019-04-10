@@ -27,12 +27,23 @@ class App extends Component {
           let newMsg = {
             id: msg.id,
             username: msg.username,
-            content: msg.content
+            content: msg.content,
+            type: msg.type
           };
           let totalMessages = [...oldMessages, newMsg];
           this.setState({messages: totalMessages});
-          console.log(totalMessages)
+          console.log('this state', this.state)
           break;
+        case "incomingNotification":
+          let newNotification = {
+            type: msg.type,
+            content: msg.content
+          }
+          this.setState({messages: [...this.state.messages, newNotification]});
+          break;
+        default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + data.type);
       }
     };
 
@@ -41,24 +52,37 @@ class App extends Component {
     };
 
     console.log("componentDidMount <App />");
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
+    // setTimeout(() => {
+    //   console.log("Simulating incoming message");
+    //   // Add a new message to the list of messages in the data store
+    //   const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
+    //   const messages = this.state.messages.concat(newMessage)
+    //   // Update the state of the app component.
+    //   // Calling setState will trigger a call to render() in App and all child components.
+    //   this.setState({messages: messages})
+    // }, 3000);
+  }
+
+  updateUser = (newName) => {
+    if (newName !== this.state.currentUser.name) {
+      let userData = {
+        type: "postNotification",
+        content: `${this.state.currentUser.name} has changed their name to ${newName}.`
+      }
+      this.setState({currentUser: {name: newName}});
+      this.socket.send(JSON.stringify(userData));
+    }
   }
 
   addMessage = (username, content) => {
     // const oldMessages = this.state.messages;
+    console.log(username, this.state.currentUser.name)
     let newData = {
       // make id generator
       // id: content.length,
       username: username,
-      content: content
+      content: content,
+      type: "postMessage"
     }
     this.socket.send(JSON.stringify(newData));
     // let totalMessages = [...oldMessages, newData];
@@ -72,7 +96,7 @@ class App extends Component {
         <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages}/>
-        <ChatBar name={this.state.currentUser.name} addMessage={this.addMessage}/>
+        <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage}/>
       </div>
     );
   }
