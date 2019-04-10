@@ -7,7 +7,8 @@ class App extends Component {
     super();
     this.state = { 
       currentUser: { name: "Bob" },
-      messages: []
+      messages: [], 
+      counter: 0
     };
   }
 
@@ -32,7 +33,6 @@ class App extends Component {
           };
           let totalMessages = [...oldMessages, newMsg];
           this.setState({messages: totalMessages});
-          console.log('this state', this.state)
           break;
         case "incomingNotification":
           let newNotification = {
@@ -40,6 +40,14 @@ class App extends Component {
             content: msg.content
           }
           this.setState({messages: [...this.state.messages, newNotification]});
+          break;
+        case "connectionAdded":
+          let addCounter = msg.number;
+          this.setState({counter: addCounter});
+          break;
+        case "connectionRemoved":
+          let subCounter = msg.number;
+          this.setState({counter: subCounter});
           break;
         default:
         // show an error in the console if the message type is unknown
@@ -93,7 +101,10 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Chatty</a>
+          <div className="navbar-usercount">
+            {this.state.counter} users online
+          </div>
         </nav>
         <MessageList messages={this.state.messages}/>
         <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage}/>

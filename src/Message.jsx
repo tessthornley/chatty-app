@@ -15,7 +15,7 @@ class Message extends Component {
       )
     } else if (this.props.type === "incomingNotification") {
         return (<div className="notification">
-          <span className="notification-content">{this.props.content}</span>
+          <span className="notification-content"><i>{this.props.content}</i></span>
         </div>)
       }
     }
