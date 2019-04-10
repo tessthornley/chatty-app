@@ -19,10 +19,10 @@ const wss = new SocketServer({ server });
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 
-wss.broadcast = function broadcast(text) {
+wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(text));
+      client.send(data);
     }
   });
 };
@@ -33,7 +33,7 @@ wss.on('connection', (ws) => {
     let text = JSON.parse(msg);
     text.id = uuidv4();
     text.type = "incomingMessage";
-    wss.broadcast(text);
+    wss.broadcast(JSON.stringify(text));
   });
 
     
