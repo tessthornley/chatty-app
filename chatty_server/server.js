@@ -24,12 +24,23 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
+// helper function to assign random colour to new user connections
+createRandomColour = () => {
+  let letters = '0123456789ABCDEF';
+  let colour = '#';
+  for (let i = 0; i < 6; i++) {
+    colour += letters[Math.floor(Math.random() * 16)];
+  }
+  return colour;
+}
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
   // on each new connection new object created with number of connections
   let connections = {
     type: "connectionAdded",
-    number: wss.clients.size
+    number: wss.clients.size,
+    colour: createRandomColour()
   };
   // connection info sent to broadcast function
   wss.broadcast(JSON.stringify(connections));
@@ -40,6 +51,7 @@ wss.on('connection', (ws) => {
     if (text.type === "postMessage") {
       text.id = uuidv4();
       text.type = "incomingMessage";
+      text.colour = connections.colour;
       wss.broadcast(JSON.stringify(text));
     } else if (text.type === "postNotification") {
       text.id = uuidv4();

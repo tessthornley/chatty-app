@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super();
     this.state = { 
-      currentUser: { name: "Annonymous" },
+      currentUser: { name: "Annonymous", colour: null },
       messages: [], 
       counter: 0
     };
@@ -14,7 +14,7 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-    
+
     this.socket = new WebSocket('ws://localhost:3001');
 
     this.socket.onopen = () => {
@@ -31,7 +31,8 @@ class App extends Component {
             id: msg.id,
             username: msg.username,
             content: msg.content,
-            type: msg.type
+            type: msg.type,
+            colour: msg.colour
           };
           // add incoming message from server to messages
           let totalMessages = [...oldMessages, newMsg];
@@ -48,7 +49,7 @@ class App extends Component {
         case "connectionAdded":
           let addCounter = msg.number;
           // online user counter updated when a connection is made
-          this.setState({counter: addCounter});
+          this.setState({currentUser: {name: this.state.currentUser.name, colour: msg.colour}, counter: addCounter});
           break;
         case "connectionRemoved":
           let subCounter = msg.number;
@@ -103,7 +104,7 @@ class App extends Component {
           </div>
         </nav>
         {/* MessageList passed messages from state and displays all messages and notifications */}
-        <MessageList messages={this.state.messages} />
+        <MessageList messages={this.state.messages} colour={this.state.currentUser.colour} />
         {/* ChatBar passed current user from state to act as defaultValue and two functions to update users and messages */}
         <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage} />
       </div>
