@@ -9,7 +9,7 @@ class MessageList extends Component {
 render () {
   {/* maps through messages from App and renders one Message component per message */}
   const messageLists  = this.props.messages.map(msg => (
-    < Message msgKey={msg.id} username={msg.username} content={msg.content} type={msg.type}/>
+    <Message msgKey={msg.id} username={msg.username} content={msg.content} type={msg.type} />
   ));
   
   {/* if messages exist, displays each entry in chronologial order otherwise displays default message */}

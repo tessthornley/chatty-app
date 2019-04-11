@@ -14,8 +14,8 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-    // used computer's IP address instead of localhost
-    this.socket = new WebSocket('ws://172.46.2.217:3001');
+    
+    this.socket = new WebSocket('ws://localhost:3001');
 
     this.socket.onopen = () => {
       console.log("Connected to the server");
@@ -41,7 +41,7 @@ class App extends Component {
           let newNotification = {
             type: msg.type,
             content: msg.content
-          }
+          };
           // add incoming notification from server to messages
           this.setState({messages: [...this.state.messages, newNotification]});
           break;
@@ -74,7 +74,7 @@ class App extends Component {
       let userData = {
         type: "postNotification",
         content: `${this.state.currentUser.name} has changed their name to ${newName}.`
-      }
+      };
       // set the state replacing the current user name with the new username 
       this.setState({currentUser: {name: newName}});
       // send object to server to broadcast to all users
@@ -88,7 +88,7 @@ class App extends Component {
       username: username,
       content: content,
       type: "postMessage"
-    }
+    };
     // send object to server to broadcast to all users
     this.socket.send(JSON.stringify(newData));
   }
@@ -103,9 +103,9 @@ class App extends Component {
           </div>
         </nav>
         {/* MessageList passed messages from state and displays all messages and notifications */}
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} />
         {/* ChatBar passed current user from state to act as defaultValue and two functions to update users and messages */}
-        <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage}/>
+        <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage} />
       </div>
     );
   }

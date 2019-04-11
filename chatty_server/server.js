@@ -30,7 +30,7 @@ wss.on('connection', (ws) => {
   let connections = {
     type: "connectionAdded",
     number: wss.clients.size
-  }
+  };
   // connection info sent to broadcast function
   wss.broadcast(JSON.stringify(connections));
 
@@ -40,7 +40,7 @@ wss.on('connection', (ws) => {
     if (text.type === "postMessage") {
       text.id = uuidv4();
       text.type = "incomingMessage";
-      wss.broadcast(JSON.stringify(text))
+      wss.broadcast(JSON.stringify(text));
     } else if (text.type === "postNotification") {
       text.id = uuidv4();
       text.type = "incomingNotification";
@@ -49,12 +49,12 @@ wss.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected')
+    console.log('Client disconnected');
     // when connection is closed create new object with number of connections to broadcast to all users
     let connectionRemoved = {
       type: "connectionRemoved",
       number: wss.clients.size
-    }
+    };
     wss.broadcast(JSON.stringify(connectionRemoved));
   });
 });
