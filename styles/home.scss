@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 
 h1 {
-  color: tomato;
+  color: #b57edc;
 }
 
 body {
@@ -51,26 +51,31 @@ body {
   }
 }
 
-.message.system {
-  font-style: italic;
-  padding: 5px 20px;
-}
-
-.message-content,
 .message-username {
   overflow: hidden;
   margin: 5px;
-  padding: 0 10px;
-  color: black
+  padding: 0 30px;
+  color: black;
+  width: 8rem;
+  font-weight: 700;
 }
 
 .message-content {
   flex: 8;
+  overflow: hidden;
+  margin: 5px;
+  padding: 0 30px;
+  color: black
 }
 
-.message-username {
-  width: 4rem;
-  font-weight: 700;
+.notification {
+  display: flex;
+  padding: 0 30px;
+  margin: 5px;
+
+  ul {
+    padding: 0;
+  }
 }
 
 .navbar {
@@ -101,8 +106,8 @@ body {
   text-shadow:#b57edc 0px 0px 1px;
   display: block;
   float: right;
-  font-weight: 700;
-  font-size: 28px;
+  font-weight: 500;
+  font-size: 18px;
   height: 60px;
   line-height: 60px;
   padding: 0 10px;

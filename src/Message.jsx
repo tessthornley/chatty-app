@@ -3,8 +3,9 @@ import React, {Component} from 'react';
 class Message extends Component {
   constructor(props) {
   super(props)
-  console.log('message props', this.props.type)
   }
+
+  // receives props from MessageList and based on type renders as a new message or new notification 
   render() {
     if (this.props.type === "incomingMessage") {
       return (
@@ -14,11 +15,14 @@ class Message extends Component {
         </li>
       )
     } else if (this.props.type === "incomingNotification") {
-        return (<div className="notification">
-          <span className="notification-content"><i>{this.props.content}</i></span>
-        </div>)
-      }
+      return (
+      <div className="notification">
+        <span className="notification-content"><i>{this.props.content}</i></span>
+      </div>
+      )
     }
   }
+  
+}
 
 export default Message;

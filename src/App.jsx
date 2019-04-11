@@ -6,14 +6,16 @@ class App extends Component {
   constructor(props) {
     super();
     this.state = { 
-      currentUser: { name: "Bob" },
+      currentUser: { name: "Annonymous" },
       messages: [], 
       counter: 0
     };
   }
 
   componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001');
+    console.log("componentDidMount <App />");
+    // used computer's IP address instead of localhost
+    this.socket = new WebSocket('ws://172.46.2.217:3001');
 
     this.socket.onopen = () => {
       console.log("Connected to the server");
@@ -21,7 +23,7 @@ class App extends Component {
 
     this.socket.onmessage = event => {
       let msg = JSON.parse(event.data);
-      
+      // switch statement that handles data received from the server
       switch(msg.type) {
         case "incomingMessage":
           const oldMessages = this.state.messages;
@@ -31,6 +33,7 @@ class App extends Component {
             content: msg.content,
             type: msg.type
           };
+          // add incoming message from server to messages
           let totalMessages = [...oldMessages, newMsg];
           this.setState({messages: totalMessages});
           break;
@@ -39,14 +42,17 @@ class App extends Component {
             type: msg.type,
             content: msg.content
           }
+          // add incoming notification from server to messages
           this.setState({messages: [...this.state.messages, newNotification]});
           break;
         case "connectionAdded":
           let addCounter = msg.number;
+          // online user counter updated when a connection is made
           this.setState({counter: addCounter});
           break;
         case "connectionRemoved":
           let subCounter = msg.number;
+          // online user counter updated when a connection is closed
           this.setState({counter: subCounter});
           break;
         default:
@@ -59,42 +65,32 @@ class App extends Component {
       console.log("Client disconnected");
     };
 
-    console.log("componentDidMount <App />");
-    // setTimeout(() => {
-    //   console.log("Simulating incoming message");
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-    //   const messages = this.state.messages.concat(newMessage)
-    //   // Update the state of the app component.
-    //   // Calling setState will trigger a call to render() in App and all child components.
-    //   this.setState({messages: messages})
-    // }, 3000);
   }
 
   updateUser = (newName) => {
+    // checks if the new username entered in the chatbar doesn't match the current user's name
     if (newName !== this.state.currentUser.name) {
+      // creates object with new info to send to server
       let userData = {
         type: "postNotification",
         content: `${this.state.currentUser.name} has changed their name to ${newName}.`
       }
+      // set the state replacing the current user name with the new username 
       this.setState({currentUser: {name: newName}});
+      // send object to server to broadcast to all users
       this.socket.send(JSON.stringify(userData));
     }
   }
 
   addMessage = (username, content) => {
-    // const oldMessages = this.state.messages;
-    console.log(username, this.state.currentUser.name)
+    // when messages is added from chatbar username and content is added to object
     let newData = {
-      // make id generator
-      // id: content.length,
       username: username,
       content: content,
       type: "postMessage"
     }
+    // send object to server to broadcast to all users
     this.socket.send(JSON.stringify(newData));
-    // let totalMessages = [...oldMessages, newData];
-    // this.setState({messages: totalMessages});
   }
   
   render() {
@@ -103,14 +99,17 @@ class App extends Component {
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
           <div className="navbar-usercount">
-            {this.state.counter} users online
+            Users online: {this.state.counter} 
           </div>
         </nav>
+        {/* MessageList passed messages from state and displays all messages and notifications */}
         <MessageList messages={this.state.messages}/>
+        {/* ChatBar passed current user from state to act as defaultValue and two functions to update users and messages */}
         <ChatBar name={this.state.currentUser.name} updateUser={this.updateUser} addMessage={this.addMessage}/>
       </div>
     );
   }
+
 }
 
 export default App;
