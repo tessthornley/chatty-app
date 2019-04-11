@@ -4,7 +4,9 @@ Client-side SPA (single-page app) built with ReactJS, Babel, Webpack, and WebSoc
 
 ## Final Product
 
-![](ChattyApp_demo.mov)
+<video width="320" height="240" controls>
+  <source src="ChattyApp_demo.mov" type="video/mp4">
+</video>
 
 ## Usage
 
