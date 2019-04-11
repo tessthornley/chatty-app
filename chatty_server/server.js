@@ -65,7 +65,7 @@ wss.on('connection', (ws) => {
     // when connection is closed create new object with number of connections to broadcast to all users
     let connectionRemoved = {
       type: "connectionRemoved",
-      number: wss.clients.size
+      number: wss.clients.size,
     };
     wss.broadcast(JSON.stringify(connectionRemoved));
   });

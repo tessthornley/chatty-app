@@ -2,6 +2,10 @@
 
 Client-side SPA (single-page app) built with ReactJS, Babel, Webpack, and WebSockets.  Chatty allows users to communicate in real-time without logging in or registering.
 
+## Final Product
+
+![](ChattyApp_demo.mov)
+
 ## Usage
 
 Clone the repo, install dependencies, and start the two servers.
