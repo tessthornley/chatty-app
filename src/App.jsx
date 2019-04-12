@@ -26,7 +26,6 @@ class App extends Component {
       // switch statement that handles data received from the server
       switch(msg.type) {
         case "incomingMessage":
-          const oldMessages = this.state.messages;
           let newMsg = {
             id: msg.id,
             username: msg.username,
@@ -35,7 +34,7 @@ class App extends Component {
             colour: msg.colour
           };
           // add incoming message from server to messages
-          let totalMessages = [...oldMessages, newMsg];
+          let totalMessages = [...this.state.messages, newMsg];
           this.setState({messages: totalMessages});
           break;
         case "incomingNotification":
