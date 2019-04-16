@@ -26,7 +26,7 @@ wss.broadcast = function broadcast(data) {
 
 // helper function to assign random colour to new user connections
 createRandomColour = () => {
-  let letters = '0123456789ABCDEF';
+  const letters = '0123456789ABCDEF';
   let colour = '#';
   for (let i = 0; i < 6; i++) {
     colour += letters[Math.floor(Math.random() * 16)];
