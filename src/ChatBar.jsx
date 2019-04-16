@@ -15,11 +15,9 @@ class ChatBar extends Component {
     this.setState({username: event.target.value});
   }
 
-  onUserEnter = (event) => {
-    // if enter key is hit on username then send new user info back to App through callback function to update current user if necessary
-    if (event.key === 'Enter') {
-      this.props.updateUser(this.state.username);
-    }
+  onBlur = (event) => {
+    // if focus out of textbox on username then send new user info back to App through callback function to update current user if necessary
+    this.props.updateUser(this.state.username);
   }
 
   onNewMessage = (event) => {
@@ -41,7 +39,7 @@ class ChatBar extends Component {
   render() {
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={this.state.username} onChange={this.onNewUser} onKeyPress={this.onUserEnter} placeholder="Your Name (Optional)" />
+        <input className="chatbar-username" defaultValue={this.state.username} onChange={this.onNewUser} onBlur={this.onBlur} placeholder="Your Name (Optional)" />
         <input className="chatbar-message" value={this.state.content} onChange={this.onNewMessage} onKeyPress={this.onMessageEnter} placeholder="Type a message and hit ENTER" />
       </footer>
     );

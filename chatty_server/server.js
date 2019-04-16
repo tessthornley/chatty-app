@@ -37,7 +37,7 @@ createRandomColour = () => {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   // on each new connection new object created with number of connections
-  let connections = {
+  const connections = {
     type: "connectionAdded",
     number: wss.clients.size,
     colour: createRandomColour()
@@ -46,24 +46,24 @@ wss.on('connection', (ws) => {
   wss.broadcast(JSON.stringify(connections));
 
   ws.on('message', (msg) => {
-    let text = JSON.parse(msg);
+    const incomingData = JSON.parse(msg);
     // when message is received from client, determine it's type, assign an id, and send back the appropriate response to broadcast to all users
-    if (text.type === "postMessage") {
-      text.id = uuidv4();
-      text.type = "incomingMessage";
-      text.colour = connections.colour;
-      wss.broadcast(JSON.stringify(text));
-    } else if (text.type === "postNotification") {
-      text.id = uuidv4();
-      text.type = "incomingNotification";
-      wss.broadcast(JSON.stringify(text));
+    if (incomingData.type === "postMessage") {
+      incomingData.id = uuidv4();
+      incomingData.type = "incomingMessage";
+      incomingData.colour = connections.colour;
+      wss.broadcast(JSON.stringify(incomingData));
+    } else if (incomingData.type === "postNotification") {
+      incomingData.id = uuidv4();
+      incomingData.type = "incomingNotification";
+      wss.broadcast(JSON.stringify(incomingData));
     }
   });
 
   ws.on('close', () => {
     console.log('Client disconnected');
     // when connection is closed create new object with number of connections to broadcast to all users
-    let connectionRemoved = {
+    const connectionRemoved = {
       type: "connectionRemoved",
       number: wss.clients.size,
     };
