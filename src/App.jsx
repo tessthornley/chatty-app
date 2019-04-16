@@ -3,7 +3,7 @@ import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 
 class App extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = { 
       currentUser: { name: "Annonymous", colour: null },
@@ -21,11 +21,11 @@ class App extends Component {
     };
 
     this.socket.onmessage = event => {
-      let msg = JSON.parse(event.data);
+      const msg = JSON.parse(event.data);
       // switch statement that handles data received from the server
       switch(msg.type) {
         case "incomingMessage":
-          let newMsg = {
+          const newMsg = {
             id: msg.id,
             username: msg.username,
             content: msg.content,
@@ -33,11 +33,11 @@ class App extends Component {
             colour: msg.colour
           };
           // add incoming message from server to messages
-          let totalMessages = [...this.state.messages, newMsg];
+          const totalMessages = [...this.state.messages, newMsg];
           this.setState({messages: totalMessages});
           break;
         case "incomingNotification":
-          let newNotification = {
+          const newNotification = {
             type: msg.type,
             content: msg.content
           };
@@ -45,12 +45,12 @@ class App extends Component {
           this.setState({messages: [...this.state.messages, newNotification]});
           break;
         case "connectionAdded":
-          let addCounter = msg.number;
+          const addCounter = msg.number;
           // online user counter updated when a connection is made
           this.setState({currentUser: {name: this.state.currentUser.name, colour: msg.colour}, counter: addCounter});
           break;
         case "connectionRemoved":
-          let subCounter = msg.number;
+          const subCounter = msg.number;
           // online user counter updated when a connection is closed
           this.setState({counter: subCounter});
           break;
@@ -70,7 +70,7 @@ class App extends Component {
     // checks if the new username entered in the chatbar doesn't match the current user's name
     if (newName !== this.state.currentUser.name) {
       // creates object with new info to send to server
-      let userData = {
+      const userData = {
         type: "postNotification",
         content: `${this.state.currentUser.name} has changed their name to ${newName}.`
       };
@@ -83,7 +83,7 @@ class App extends Component {
 
   addMessage = (username, content) => {
     // when messages is added from chatbar username and content is added to object
-    let newData = {
+    const newData = {
       username: username,
       content: content,
       type: "postMessage"

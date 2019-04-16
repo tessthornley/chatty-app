@@ -15,7 +15,7 @@ class ChatBar extends Component {
     this.setState({username: event.target.value});
   }
 
-  onBlur = (event) => {
+  onBlur = () => {
     // if focus out of textbox on username then send new user info back to App through callback function to update current user if necessary
     this.props.updateUser(this.state.username);
   }

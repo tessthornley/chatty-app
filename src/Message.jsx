@@ -14,7 +14,7 @@ const Message = ({ type, colour, content, username }) => {
     return (
       <div className="notification">
         <span className="notification-content">
-          <i>{content}</i>
+          {content}
         </span>
       </div>
     );
